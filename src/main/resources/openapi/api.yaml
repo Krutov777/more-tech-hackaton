@@ -1,21 +1,240 @@
 openapi: 3.0.1
 
 info:
-  title: Moretech API
+  title: MORE.Tech API
   version: v1
 
 paths:
-  /api/v1/ping:
+  /api/v1/atms/{atmId}:
     get:
-      summary: Возвращает приветствие
+      tags:
+        - Банкоматы
+      summary: Получение подробной информации о банкомате
+      parameters:
+        - $ref: '#/components/parameters/atmIdPath'
       responses:
         '200':
-          description: Успешный запрос
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Привет, мир!
+          $ref: '#/components/responses/atmInfoResponse'
+        # '400':
+        #   $ref: '#/components/responses/genericError'
+        # '500':
+        #   $ref: '#/components/responses/genericError'
+
+  /api/v1/departments/{departmentId}:
+    get:
+      tags:
+        - Отделения
+      summary: Получение подробной информации об отделении
+      parameters:
+        - $ref: '#/components/parameters/departmentIdPath'
+      responses:
+        '200':
+          $ref: '#/components/responses/departmentInfoResponse'
+        # '400':
+        #   $ref: '#/components/responses/genericError'
+        # '500':
+        #   $ref: '#/components/responses/genericError'
+
+  /api/v1/objects:
+    get:
+      tags:
+        - Отделения, Банкоматы
+      summary: Получение списка отделений и банкоматов
+      parameters:
+        - $ref: '#/components/parameters/leftTopCoordinate'
+        - $ref: '#/components/parameters/rightBottomCoordinate'
+      responses:
+        '200':
+          $ref: '#/components/responses/objectsInfoResponse'
+          # '400':
+          #   $ref: '#/components/responses/genericError'
+          # '500':
+          #   $ref: '#/components/responses/genericError'
+
+components:
+  parameters:
+    departmentIdPath:
+      in: path
+      name: departmentId
+      required: true
+      schema:
+        $ref: '#/components/schemas/long'
+      description: ИД отделения
+
+    atmIdPath:
+      in: path
+      name: atmId
+      required: true
+      schema:
+        $ref: '#/components/schemas/long'
+      description: ИД банкомата
+
+    leftTopCoordinate:
+      in: query
+      name: leftTopCoordinate
+      required: true
+      schema:
+        $ref: '#/components/schemas/coordinateDto'
+      description: Левая верхняя координата
+
+    rightBottomCoordinate:
+      in: query
+      name: rightBottomCoordinate
+      required: true
+      schema:
+        $ref: '#/components/schemas/coordinateDto'
+      description: Нижняя правая координата
+
+  schemas:
+    int:
+      type: integer
+      format: int32
+    long:
+      type: integer
+      format: int64
+    decimal:
+      type: number
+      multipleOf: 50.000001
+
+    coordinateDto:
+      type: object
+      properties:
+        latitude:
+          $ref: '#/components/schemas/decimal'
+        longitude:
+          $ref: '#/components/schemas/decimal'
+
+    dayDto:
+      type: string
+      enum: [
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY,
+        SATURDAY,
+        SUNDAY
+      ]
+      default: MONDAY
+      description: День недели
+
+    departmentStatusDto:
+      type: string
+      enum: [
+        OPEN,
+        CLOSED,
+        TECKNICAL_PROBLEMS
+      ]
+      default: OPEN
+      description: Статус отделения
+
+    operatingModeDto:
+      type: object
+      description: Режим работы
+      properties:
+        day:
+          $ref: '#/components/schemas/dayDto'
+        openHours:
+          $ref: '#/components/schemas/openHoursDto'
+
+    openHoursDto:
+      type: object
+      description: часы работы
+      properties:
+        from:
+          type: string
+          format: time
+        to:
+          type: string
+          format: time
+
+    serviceDto:
+      type: object
+      description: Информация о сервисе
+      properties:
+        name:
+          type: string
+        serviceCapability:
+          type: boolean
+        serviceActivity:
+          type: boolean
+
+    departmentInfoResponseDto:
+      description: Ответ ручки для получения информации об отделении
+      type: object
+      properties:
+        address:
+          type: string
+        metroStation:
+          type: string
+        distanse:
+          $ref: '#/components/schemas/long'
+        status:
+          $ref: '#/components/schemas/departmentStatusDto'
+        latitude:
+          $ref: '#/components/schemas/decimal'
+        longitude:
+          $ref: '#/components/schemas/decimal'
+        hasRamp:
+          type: boolean
+        legalEntities:
+          $ref: '#/components/schemas/operatingModeDto'
+        physicalEntities:
+          $ref: '#/components/schemas/operatingModeDto'
+
+    atmInfoResponseDto:
+      description: Ответ ручки для получения информации о банкомате
+      type: object
+      properties:
+        address:
+          type: string
+        metroStation:
+          type: string
+        allDay:
+          type: boolean
+        distanse:
+          $ref: '#/components/schemas/long'
+        latitude:
+          $ref: '#/components/schemas/decimal'
+        longitude:
+          $ref: '#/components/schemas/decimal'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/serviceDto'
+
+    objectsInfoResponseDto:
+      description: Ответ для ручки получения списка отделений и банкоматов
+      type: object
+      properties:
+        atms:
+          type: array
+          items:
+            $ref: '#/components/schemas/atmInfoResponseDto'
+        departaments:
+          type: array
+          items:
+            $ref: '#/components/schemas/departmentInfoResponseDto'
+
+  responses:
+    objectsInfoResponse:
+      description: Информация об отделении
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/objectsInfoResponseDto'
+
+    departmentInfoResponse:
+      description: Информация об отделении
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/departmentInfoResponseDto'
+
+    atmInfoResponse:
+      description: Информация о банкомате
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/atmInfoResponseDto'
+
