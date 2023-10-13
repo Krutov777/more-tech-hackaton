@@ -1,0 +1,21 @@
+openapi: 3.0.1
+
+info:
+  title: Moretech API
+  version: v1
+
+paths:
+  /api/v1/ping:
+    get:
+      summary: Возвращает приветствие
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Привет, мир!
