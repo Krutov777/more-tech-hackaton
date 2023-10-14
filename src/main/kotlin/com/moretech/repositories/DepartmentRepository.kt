@@ -21,10 +21,10 @@ interface DepartmentRepository : JpaRepository<Department, Long> {
     )
     fun findByDepartmentIdsAndCoordinates(
         @Param("ids") ids: List<Long>,
-        @Param("topLatitude") topLatitude: BigDecimal,
-        @Param("bottomLatitude") bottomLatitude: BigDecimal,
-        @Param("leftLongitude") leftLongitude: BigDecimal,
-        @Param("rightLongitude") rightLongitude: BigDecimal
+        @Param("topLatitude") topLatitude: Double,
+        @Param("bottomLatitude") bottomLatitude: Double,
+        @Param("leftLongitude") leftLongitude: Double,
+        @Param("rightLongitude") rightLongitude: Double
     ): List<Department>
 
     @Query(
@@ -36,10 +36,10 @@ interface DepartmentRepository : JpaRepository<Department, Long> {
             "   AND d.longitude <= :rightLongitude"
     )
     fun findByCoordinates(
-        @Param("topLatitude") topLatitude: BigDecimal,
-        @Param("bottomLatitude") bottomLatitude: BigDecimal,
-        @Param("leftLongitude") leftLongitude: BigDecimal,
-        @Param("rightLongitude") rightLongitude: BigDecimal
+        @Param("topLatitude") topLatitude: Double,
+        @Param("bottomLatitude") bottomLatitude: Double,
+        @Param("leftLongitude") leftLongitude: Double,
+        @Param("rightLongitude") rightLongitude: Double
     ): List<Department>
 
 }

@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import java.math.BigDecimal
 
 @Repository
 interface AtmRepository : JpaRepository<Atm, Long> {
@@ -20,10 +19,10 @@ interface AtmRepository : JpaRepository<Atm, Long> {
     )
     fun findByAtmIdsAndCoordinates(
         @Param("ids") ids: List<Long>,
-        @Param("topLatitude") topLatitude: BigDecimal,
-        @Param("bottomLatitude") bottomLatitude: BigDecimal,
-        @Param("leftLongitude") leftLongitude: BigDecimal,
-        @Param("rightLongitude") rightLongitude: BigDecimal
+        @Param("topLatitude") topLatitude: Double,
+        @Param("bottomLatitude") bottomLatitude: Double,
+        @Param("leftLongitude") leftLongitude: Double,
+        @Param("rightLongitude") rightLongitude: Double
     ): List<Atm>
 
     @Query(
@@ -35,9 +34,9 @@ interface AtmRepository : JpaRepository<Atm, Long> {
             "   AND a.longitude <= :rightLongitude"
     )
     fun findByCoordinates(
-        @Param("topLatitude") topLatitude: BigDecimal,
-        @Param("bottomLatitude") bottomLatitude: BigDecimal,
-        @Param("leftLongitude") leftLongitude: BigDecimal,
-        @Param("rightLongitude") rightLongitude: BigDecimal
+        @Param("topLatitude") topLatitude: Double,
+        @Param("bottomLatitude") bottomLatitude: Double,
+        @Param("leftLongitude") leftLongitude: Double,
+        @Param("rightLongitude") rightLongitude: Double
     ): List<Atm>
 }
