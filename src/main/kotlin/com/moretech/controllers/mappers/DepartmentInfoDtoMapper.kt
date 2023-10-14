@@ -1,8 +1,10 @@
 package com.moretech.controllers.mappers
 
-import com.model.*
+import com.model.CoordinateDto
+import com.model.DepartmentInfoResponseDto
+import com.model.DepartmentStatusDto
 import com.moretech.entities.Department
-import com.moretech.entities.OpenHours
+import com.moretech.entities.OpenHoursKey
 
 class DepartmentInfoDtoMapper {
     companion object {
@@ -21,14 +23,14 @@ class DepartmentInfoDtoMapper {
                 //.workload(department)
                 .individual(
                     department.openHours
-                        ?.filter { it.typeWork == OpenHours.TypeWork.INDIVIDUAL }
+                        ?.filter { it.id?.typeWork == OpenHoursKey.TypeWork.INDIVIDUAL }
                         ?.map {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
                         } ?: listOf()
                 )
                 .legal(
                     department.openHours
-                        ?.filter { it.typeWork == OpenHours.TypeWork.LEGAL }
+                        ?.filter { it.id?.typeWork == OpenHoursKey.TypeWork.LEGAL }
                         ?.map {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
                         } ?: listOf()
@@ -36,7 +38,7 @@ class DepartmentInfoDtoMapper {
                 //todo clients and services mappers
         }
 
-        fun mapDepartmentStatusToDepartmentStatusDto(status: String?): DepartmentStatusDto = when (status) {
+        private fun mapDepartmentStatusToDepartmentStatusDto(status: String?): DepartmentStatusDto = when (status) {
             "OPEN" -> DepartmentStatusDto.OPEN
             "CLOSED" -> DepartmentStatusDto.CLOSED
             "TECHNICAL_PROBLEMS" -> DepartmentStatusDto.TECHNICAL_PROBLEMS
