@@ -12,7 +12,7 @@ open class OpenHours(
     open var endTime: LocalTime? = null,
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @MapsId("departmentId")
     open var department: Department? = null,
 
     @EmbeddedId

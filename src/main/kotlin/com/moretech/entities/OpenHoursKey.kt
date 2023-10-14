@@ -1,10 +1,7 @@
 package com.moretech.entities
 
 import java.io.Serializable
-import javax.persistence.Column
-import javax.persistence.Embeddable
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
+import javax.persistence.*
 
 @Embeddable
 open class OpenHoursKey(
@@ -15,8 +12,7 @@ open class OpenHoursKey(
     @Enumerated(value = EnumType.STRING)
     open var typeWork: TypeWork? = null,
 
-    @Column(name = "open_hours_id")
-    open var openHoursId: Long? = null,
+    open var departmentId: Long? = null
 ): Serializable {
     enum class Days {
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
