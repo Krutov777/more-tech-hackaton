@@ -15,5 +15,5 @@ open class ClientTypeDepartment(
     open var clientType: ClientType? = null,
 
     @EmbeddedId
-    open var id: ServiceDepartmentKey? = null
+    open var id: ClientTypeDepartmentKey? = null
 )

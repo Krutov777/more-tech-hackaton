@@ -43,3 +43,23 @@ insert into service_department(
       (1, 1),
       (1, 2),
       (2, 2);
+
+
+delete from client_type;
+insert into client_type(
+    id, name
+) values
+    (1, 'Малый бизнес'),
+    (2, 'Средний бизнес'),
+    (3, 'ВИП'),
+    (4, 'Обычный клиент');
+
+delete from client_type_department;
+insert into client_type_department(
+    department_id, client_type_id
+) values
+      (1, 1),
+      (1, 2),
+      (2, 2),
+	  (3, 3),
+	  (3, 4);
