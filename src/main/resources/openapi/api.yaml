@@ -123,7 +123,7 @@ components:
       enum: [
         OPEN,
         CLOSED,
-        TECKNICAL_PROBLEMS
+        TECHNICAL_PROBLEMS
       ]
       default: OPEN
       description: Статус отделения
@@ -167,20 +167,24 @@ components:
           type: string
         metroStation:
           type: string
-        distanse:
+        distance:
           $ref: '#/components/schemas/long'
         status:
           $ref: '#/components/schemas/departmentStatusDto'
-        latitude:
-          $ref: '#/components/schemas/decimal'
-        longitude:
-          $ref: '#/components/schemas/decimal'
+        coordinates:
+          $ref: '#/components/schemas/coordinateDto'
+        workload:
+          $ref: '#/components/schemas/int'
         hasRamp:
           type: boolean
-        legalEntities:
-          $ref: '#/components/schemas/operatingModeDto'
-        physicalEntities:
-          $ref: '#/components/schemas/operatingModeDto'
+        legal:
+          type: array
+          items:
+            $ref: '#/components/schemas/operatingModeDto'
+        individual:
+          type: array
+          items:
+            $ref: '#/components/schemas/operatingModeDto'
 
     atmInfoResponseDto:
       description: Ответ ручки для получения информации о банкомате
@@ -192,12 +196,10 @@ components:
           type: string
         allDay:
           type: boolean
-        distanse:
+        distance:
           $ref: '#/components/schemas/long'
-        latitude:
-          $ref: '#/components/schemas/decimal'
-        longitude:
-          $ref: '#/components/schemas/decimal'
+        coordinates:
+          $ref: '#/components/schemas/coordinateDto'
         services:
           type: array
           items:
@@ -211,7 +213,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/atmInfoResponseDto'
-        departaments:
+        departments:
           type: array
           items:
             $ref: '#/components/schemas/departmentInfoResponseDto'
