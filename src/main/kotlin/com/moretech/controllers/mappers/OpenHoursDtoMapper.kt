@@ -7,8 +7,8 @@ class OpenHoursDtoMapper {
     companion object {
         fun mapOpenHoursToOpenHoursDto(openHours: OpenHours) : OpenHoursDto {
             return OpenHoursDto()
-                .from(openHours.startTime.toString())
-                .to(openHours.endTime.toString())
+                .from(openHours.startTime?.toString())
+                .to(openHours.endTime?.toString())
         }
     }
 }

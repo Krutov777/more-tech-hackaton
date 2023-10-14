@@ -3,17 +3,16 @@ package com.moretech.controllers.mappers
 import com.model.CoordinateDto
 import com.model.DepartmentInfoResponseDto
 import com.model.DepartmentStatusDto
-import com.moretech.entities.ClientType
-import com.moretech.entities.Department
-import com.moretech.entities.OpenHoursKey
-import com.moretech.entities.ServiceDepartment
+import com.moretech.entities.*
 
 class DepartmentInfoDtoMapper {
     companion object {
         fun mapDepartmentEntityToDepartmentInfoDto(
             department: Department,
             services: List<ServiceDepartment>,
-            clientTypes: List<ClientType>): DepartmentInfoResponseDto {
+            clientTypes: List<ClientType>,
+            openHours: List<OpenHours>
+        ): DepartmentInfoResponseDto {
             return DepartmentInfoResponseDto()
                 .id(department.id)
                 .address(department.address)
@@ -27,18 +26,18 @@ class DepartmentInfoDtoMapper {
                 .status(mapDepartmentStatusToDepartmentStatusDto(department.status))
                 //.workload(department)
                 .individual(
-                    department.openHours
-                        ?.filter { it.id?.typeWork == OpenHoursKey.TypeWork.INDIVIDUAL }
-                        ?.map {
+                    openHours
+                        .filter { it.id?.typeWork == OpenHoursKey.TypeWork.INDIVIDUAL }
+                        .map {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
-                        } ?: listOf()
+                        }
                 )
                 .legal(
-                    department.openHours
-                        ?.filter { it.id?.typeWork == OpenHoursKey.TypeWork.LEGAL }
-                        ?.map {
+                    openHours
+                        .filter { it.id?.typeWork == OpenHoursKey.TypeWork.LEGAL }
+                        .map {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
-                        } ?: listOf()
+                        }
                 )
                 .services(
                     services.map { ServiceDtoMapper.mapServiceDepartmentToServiceDto(it) }
