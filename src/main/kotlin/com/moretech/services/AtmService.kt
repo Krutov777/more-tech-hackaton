@@ -21,6 +21,7 @@ class AtmService(
         val serviceList: List<com.moretech.entities.Service> = serviceAtm.map { it.id?.serviceId }.let { serviceRepository.findAllByIdIn(it as List<Long>) }
         val serviceListDto: List<ServiceDto> = serviceList.map { elem ->
             ServiceDto()
+                .id(elem.id)
                 .name(elem.name)
                 .serviceActivity(
                     serviceAtm.find { it.id?.serviceId == elem.id }?.serviceActivity.toString()
