@@ -2,8 +2,9 @@ package com.moretech.controllers
 
 import com.api.ApiApi
 import com.model.AtmInfoResponseDto
-import com.model.CoordinateDto
 import com.model.DepartmentInfoResponseDto
+import com.model.FilterDto
+import com.model.FilterListDto
 import com.model.ObjectsInfoResponseDto
 import com.moretech.services.AtmService
 import org.springframework.http.HttpStatus
@@ -25,10 +26,19 @@ class MainController(
         return super.apiV1DepartmentsDepartmentIdGet(departmentId)
     }
 
-    override fun apiV1ObjectsGet(
-        leftTopCoordinate: CoordinateDto,
-        rightBottomCoordinate: CoordinateDto
-    ): ResponseEntity<ObjectsInfoResponseDto> {
-        return super.apiV1ObjectsGet(leftTopCoordinate, rightBottomCoordinate)
+    override fun apiV1FilterClientsGet(): ResponseEntity<MutableList<FilterListDto>> {
+        return super.apiV1FilterClientsGet()
+    }
+
+    override fun apiV1FilterOfficesGet(): ResponseEntity<MutableList<FilterListDto>> {
+        return super.apiV1FilterOfficesGet()
+    }
+
+    override fun apiV1FilterServicesGet(): ResponseEntity<MutableList<FilterListDto>> {
+        return super.apiV1FilterServicesGet()
+    }
+
+    override fun apiV1ListPost(filterDto: FilterDto?): ResponseEntity<ObjectsInfoResponseDto> {
+        return super.apiV1ListPost(filterDto)
     }
 }
