@@ -6,8 +6,13 @@ import com.model.DepartmentInfoResponseDto
 import com.model.FilterDto
 import com.model.FilterListDto
 import com.model.ObjectsInfoResponseDto
+import com.moretech.controllers.mappers.AtmDtoMapper
+import com.moretech.controllers.mappers.DepartmentInfoDtoMapper
 import com.moretech.controllers.mappers.FilterListDtoMapper
+import com.moretech.entities.Atm
+import com.moretech.entities.Department
 import com.moretech.services.AtmService
+import com.moretech.services.ObjectsFilterService
 import com.moretech.services.DepartmentService
 import com.moretech.services.ServiceService
 import org.springframework.http.HttpStatus
@@ -18,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController
 class MainController(
     private val atmService: AtmService,
     private val serviceService: ServiceService,
-    private val departmentService: DepartmentService
+    private val departmentService: DepartmentService,
+    private val objectsFilterService: ObjectsFilterService
 ) : ApiApi {
     override fun apiV1AtmsAtmIdGet(atmId: Long): ResponseEntity<AtmInfoResponseDto> {
         return ResponseEntity(
@@ -50,6 +56,21 @@ class MainController(
     }
 
     override fun apiV1ListPost(filterDto: FilterDto): ResponseEntity<ObjectsInfoResponseDto> {
-        return super.apiV1ListPost(filterDto)
+        val atms: List<Atm> = objectsFilterService.findAtmsBy(filterDto)
+        val departments: List<Department> = objectsFilterService.findDepartmentsBy(filterDto)
+
+        return ResponseEntity(
+            ObjectsInfoResponseDto()
+                .atms(atms.map { AtmDtoMapper.mapAtmToAtmDto(it) })
+                .departments(departments.map {
+                    DepartmentInfoDtoMapper.mapDepartmentEntityToDepartmentInfoDto(
+                        it,
+                        listOf(),
+                        listOf(),
+                        listOf()
+                    )
+                }),
+            HttpStatus.OK
+        )
     }
 }

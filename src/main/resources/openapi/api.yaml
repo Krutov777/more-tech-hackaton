@@ -298,7 +298,7 @@ components:
           type: array
           description: массив типов клиентов
           items:
-            $ref: '#/components/schemas/clientTypeDto'
+            $ref: '#/components/schemas/long'
         hasRamp:
           type: boolean
 
