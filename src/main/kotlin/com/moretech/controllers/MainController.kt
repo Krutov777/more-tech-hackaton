@@ -11,10 +11,7 @@ import com.moretech.controllers.mappers.DepartmentInfoDtoMapper
 import com.moretech.controllers.mappers.FilterListDtoMapper
 import com.moretech.entities.Atm
 import com.moretech.entities.Department
-import com.moretech.services.AtmService
-import com.moretech.services.ObjectsFilterService
-import com.moretech.services.DepartmentService
-import com.moretech.services.ServiceService
+import com.moretech.services.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -24,7 +21,8 @@ class MainController(
     private val atmService: AtmService,
     private val serviceService: ServiceService,
     private val departmentService: DepartmentService,
-    private val objectsFilterService: ObjectsFilterService
+    private val objectsFilterService: ObjectsFilterService,
+    private val clientTypeService: ClientTypeService
 ) : ApiApi {
     override fun apiV1AtmsAtmIdGet(atmId: Long): ResponseEntity<AtmInfoResponseDto> {
         return ResponseEntity(
@@ -41,7 +39,10 @@ class MainController(
     }
 
     override fun apiV1FilterClientsGet(): ResponseEntity<List<FilterListDto>> {
-        return super.apiV1FilterClientsGet()
+        return ResponseEntity(
+            FilterListDtoMapper.mapClientTypeEntityToFilterListDto(clientTypeService.findAllClientTypes()),
+            HttpStatus.OK
+        )
     }
 
     override fun apiV1FilterOfficesGet(): ResponseEntity<List<FilterListDto>> {
