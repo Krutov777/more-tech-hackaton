@@ -31,6 +31,7 @@ class AtmService(
                 )
         }
         return AtmInfoResponseDto()
+            .id(atm.id)
             .address(atm.address)
             .metroStation(atm.metroStation)
             .allDay(atm.allDay)

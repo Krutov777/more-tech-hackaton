@@ -181,6 +181,8 @@ components:
       description: Ответ ручки для получения информации об отделении
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/long'
         address:
           type: string
         metroStation:
@@ -208,6 +210,8 @@ components:
       description: Ответ ручки для получения информации о банкомате
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/long'
         address:
           type: string
         metroStation:
@@ -276,7 +280,7 @@ components:
           description: массив типов клиентов
           items:
             $ref: '#/components/schemas/clientTypeDto'
-        hasPandus:
+        hasRamp:
           type: boolean
 
   requestBodies:
