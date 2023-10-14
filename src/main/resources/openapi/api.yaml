@@ -177,6 +177,15 @@ components:
         serviceActivity:
           type: string
 
+    clientDto:
+      type: object
+      description: Информация о типе клиента
+      properties:
+        id:
+          $ref: '#/components/schemas/long'
+        name:
+          type: string
+
     departmentInfoResponseDto:
       description: Ответ ручки для получения информации об отделении
       type: object
@@ -205,6 +214,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/operatingModeDto'
+        services:
+          type: array
+          description: Список типов услуг, которые предоставляет отделение
+          items:
+            $ref: '#/components/schemas/serviceDto'
+        clients:
+          type: array
+          description: Список типов клиентов, которых может обслуживать это отделение
+          items:
+            $ref: '#/components/schemas/clientDto'
 
     atmInfoResponseDto:
       description: Ответ ручки для получения информации о банкомате
