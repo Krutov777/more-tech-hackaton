@@ -22,7 +22,8 @@ class MainController(
     private val serviceService: ServiceService,
     private val departmentService: DepartmentService,
     private val objectsFilterService: ObjectsFilterService,
-    private val clientTypeService: ClientTypeService
+    private val clientTypeService: ClientTypeService,
+    private val departmentTypeService: DepartmentTypeService
 ) : ApiApi {
     override fun apiV1AtmsAtmIdGet(atmId: Long): ResponseEntity<AtmInfoResponseDto> {
         return ResponseEntity(
@@ -46,7 +47,10 @@ class MainController(
     }
 
     override fun apiV1FilterOfficesGet(): ResponseEntity<List<FilterListDto>> {
-        return super.apiV1FilterOfficesGet()
+        return ResponseEntity(
+            FilterListDtoMapper.mapDepartmentTypeEntityToFilterListDto(departmentTypeService.findAllDepartmentTypes()),
+            HttpStatus.OK
+        )
     }
 
     override fun apiV1FilterServicesGet(): ResponseEntity<List<FilterListDto>> {
