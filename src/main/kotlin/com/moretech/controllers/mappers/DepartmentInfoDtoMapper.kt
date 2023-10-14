@@ -3,12 +3,17 @@ package com.moretech.controllers.mappers
 import com.model.CoordinateDto
 import com.model.DepartmentInfoResponseDto
 import com.model.DepartmentStatusDto
+import com.moretech.entities.ClientType
 import com.moretech.entities.Department
 import com.moretech.entities.OpenHoursKey
+import com.moretech.entities.ServiceDepartment
 
 class DepartmentInfoDtoMapper {
     companion object {
-        fun mapDepartmentEntityToDepartmentInfoDto(department: Department): DepartmentInfoResponseDto {
+        fun mapDepartmentEntityToDepartmentInfoDto(
+            department: Department,
+            services: List<ServiceDepartment>,
+            clientTypes: List<ClientType>): DepartmentInfoResponseDto {
             return DepartmentInfoResponseDto()
                 .id(department.id)
                 .address(department.address)
@@ -35,7 +40,12 @@ class DepartmentInfoDtoMapper {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
                         } ?: listOf()
                 )
-                //todo clients and services mappers
+                .services(
+                    services.map { ServiceDtoMapper.mapServiceDepartmentToServiceDto(it) }
+                )
+                .clients(
+                    clientTypes.map { ClientDtoMapper.mapClientTypeToClientDto(it) }
+                )
         }
 
         private fun mapDepartmentStatusToDepartmentStatusDto(status: String?): DepartmentStatusDto = when (status) {
