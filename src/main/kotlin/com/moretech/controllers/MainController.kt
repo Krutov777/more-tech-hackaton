@@ -6,11 +6,16 @@ import com.model.DepartmentInfoResponseDto
 import com.model.FilterDto
 import com.model.FilterListDto
 import com.model.ObjectsInfoResponseDto
+import com.moretech.controllers.mapper.FilterListMapper
+import com.moretech.services.ServiceService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class MainController : ApiApi {
+class MainController(
+    private val serviceService: ServiceService
+) : ApiApi {
     override fun apiV1AtmsAtmIdGet(atmId: Long): ResponseEntity<AtmInfoResponseDto> {
         return super.apiV1AtmsAtmIdGet(atmId)
     }
@@ -23,15 +28,18 @@ class MainController : ApiApi {
         return super.apiV1ListPost(filterDto)
     }
 
-    override fun apiV1FilterClientsGet(): ResponseEntity<MutableList<FilterListDto>> {
+    override fun apiV1FilterClientsGet(): ResponseEntity<List<FilterListDto>> {
         return super.apiV1FilterClientsGet()
     }
 
-    override fun apiV1FilterOfficesGet(): ResponseEntity<MutableList<FilterListDto>> {
+    override fun apiV1FilterOfficesGet(): ResponseEntity<List<FilterListDto>> {
         return super.apiV1FilterOfficesGet()
     }
 
-    override fun apiV1FilterServicesGet(): ResponseEntity<MutableList<FilterListDto>> {
-        return super.apiV1FilterServicesGet()
+    override fun apiV1FilterServicesGet(): ResponseEntity<List<FilterListDto>> {
+        return ResponseEntity(
+            FilterListMapper.mapServiceEntityToFilterListDto(serviceService.findAllServices()),
+            HttpStatus.OK
+        )
     }
 }
