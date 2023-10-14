@@ -12,7 +12,7 @@ open class Department(
     open var status : String? = null,
     @Column(name = "rko")
     open var rko : String? = null,
-    @Column(name = "office_type")
+    @Column(name = "department_type")
     open var departmentType : String? = null,
     @Column(name = "sale_point_format")
     open var salePointFormat : String? = null,
@@ -31,6 +31,9 @@ open class Department(
 
     @OneToMany(mappedBy = "department")
     open var openHours: MutableSet<OpenHours>? = null,
+
+    @OneToMany(mappedBy = "department")
+    open var serviceDepartment: MutableSet<ServiceDepartment>? = null,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
