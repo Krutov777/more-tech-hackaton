@@ -29,11 +29,11 @@ delete from department;
 insert into department(
     id, address, department_type, distance, has_ramp,
     latitude, longitude, metro_station, rko, sale_point_format,
-    sale_point_name, status, suo_availability
+    sale_point_name, status, suo_availability, department_type_id
 ) values
-      (1, 'ул. Богородский Вал, д. 6, корп. 1', 'DEPTYPE', 1000, true, 50.234934, 100.2003, 'м. Московская', 'RKO1', 'Корпоративный', 'Имя', 'AVAILABLE', true),
-      (2, 'ул. Богородский Вал, д. 6, корп. 1', 'DEPTYPE', 1000, true, 50.234934, 100.2003, 'м. Московская', 'RKO1', 'Корпоративный', 'Имя', 'AVAILABLE', true),
-      (3, 'ул. Богородский Вал, д. 6, корп. 1', 'DEPTYPE', 1000, true, 50.234934, 100.2003, 'м. Московская', 'RKO1', 'Корпоративный', 'Имя', 'AVAILABLE', true);
+      (1, 'ул. Богородский Вал, д. 6, корп. 1', 'DEPTYPE', 1000, true, 50.234934, 100.2003, 'м. Московская', 'RKO1', 'Корпоративный', 'Имя', 'AVAILABLE', true, 1),
+      (2, 'ул. Богородский Вал, д. 6, корп. 1', 'DEPTYPE', 1000, true, 50.234934, 100.2003, 'м. Московская', 'RKO1', 'Корпоративный', 'Имя', 'AVAILABLE', true, 2),
+      (3, 'ул. Богородский Вал, д. 6, корп. 1', 'DEPTYPE', 1000, true, 50.234934, 100.2003, 'м. Московская', 'RKO1', 'Корпоративный', 'Имя', 'AVAILABLE', true, 3);
 
 
 delete from service_department;
@@ -110,3 +110,20 @@ insert into open_hours(
 	('FRIDAY', '12:00:00', '18:00:00', 'LEGAL', 3),
 	('SATURDAY', null, null, 'LEGAL', 3),
 	('SUNDAY', null , null , 'LEGAL', 3);
+
+delete from department_type;
+insert into department_type(
+    id, name
+) values
+    (1, 'Универсальный'),
+    (2, 'Стандарт'),
+    (3, 'Розничный (РБ)'),
+    (4, 'Микро (РБ)'),
+	(5, 'Мини_расш'),
+	(6, 'Корпоративный'),
+	(7, 'Привилегия (РБ)'),
+	(8, 'Стандарт+бизнес отдел'),
+	(9, 'Прайм (РБ)'),
+	(10, 'Филиал'),
+	(11, 'Брокер'),
+	(12, 'Микро 2(3)');

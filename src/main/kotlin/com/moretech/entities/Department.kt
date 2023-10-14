@@ -29,6 +29,10 @@ open class Department(
     @Column(name = "distance")
     open var distance: Int? = null,
 
+    @ManyToOne
+    @JoinColumn(name = "department_type_id", nullable = false)
+    open var department: Department? = null,
+
     @OneToMany(mappedBy = "department")
     open var openHours: MutableSet<OpenHours>? = null,
 
