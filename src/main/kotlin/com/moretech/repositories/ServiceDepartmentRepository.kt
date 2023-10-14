@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ServiceDepartmentRepository : JpaRepository<ServiceDepartment, ServiceDepartmentKey> {
+    fun findAllByDepartmentId(departmentId: Long): List<ServiceDepartment>
 }
