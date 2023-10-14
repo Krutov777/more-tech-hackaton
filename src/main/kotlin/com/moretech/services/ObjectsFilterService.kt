@@ -51,19 +51,19 @@ class ObjectsFilterService(
 
             return atmRepository.findByAtmIdsAndCoordinates(
                 atmIds.toList(),
-                filterDto.leftTopCoordinate.latitude,
-                filterDto.rightBottomCoordinate.latitude,
-                filterDto.leftTopCoordinate.longitude,
-                filterDto.rightBottomCoordinate.longitude
+                filterDto.leftTopCoordinate.latitude.toDouble(),
+                filterDto.rightBottomCoordinate.latitude.toDouble(),
+                filterDto.leftTopCoordinate.longitude.toDouble(),
+                filterDto.rightBottomCoordinate.longitude.toDouble()
             )
         }
 
         // найти только все банкоматы по ИД и по координатам
         return atmRepository.findByCoordinates(
-            filterDto.leftTopCoordinate.latitude,
-            filterDto.rightBottomCoordinate.latitude,
-            filterDto.leftTopCoordinate.longitude,
-            filterDto.rightBottomCoordinate.longitude
+            filterDto.leftTopCoordinate.latitude.toDouble(),
+            filterDto.rightBottomCoordinate.latitude.toDouble(),
+            filterDto.leftTopCoordinate.longitude.toDouble(),
+            filterDto.rightBottomCoordinate.longitude.toDouble()
         )
     }
 
@@ -104,17 +104,17 @@ class ObjectsFilterService(
         return if (depIds.isNotEmpty()) {
             departmentRepository.findByDepartmentIdsAndCoordinates(
                 depIds.toList(),
-                filterDto.leftTopCoordinate.latitude,
-                filterDto.rightBottomCoordinate.latitude,
-                filterDto.leftTopCoordinate.longitude,
-                filterDto.rightBottomCoordinate.longitude
+                filterDto.leftTopCoordinate.latitude.toDouble(),
+                filterDto.rightBottomCoordinate.latitude.toDouble(),
+                filterDto.leftTopCoordinate.longitude.toDouble(),
+                filterDto.rightBottomCoordinate.longitude.toDouble()
             )
         } else {
             departmentRepository.findByCoordinates(
-                filterDto.leftTopCoordinate.latitude,
-                filterDto.rightBottomCoordinate.latitude,
-                filterDto.leftTopCoordinate.longitude,
-                filterDto.rightBottomCoordinate.longitude
+                filterDto.leftTopCoordinate.latitude.toDouble(),
+                filterDto.rightBottomCoordinate.latitude.toDouble(),
+                filterDto.leftTopCoordinate.longitude.toDouble(),
+                filterDto.rightBottomCoordinate.longitude.toDouble()
             )
         }
     }
@@ -128,7 +128,7 @@ class ObjectsFilterService(
             val degreePerKm =
                 1 / (111.32 * cos(topLatitude.toDouble() * Math.PI / 180)) // коэффициент перевода км в градусы для долготы
             val degrees = OFFSET * degreePerKm // перевод км в градусы для долготы
-            val leftLongitude: BigDecimal = (filterDto.curUserCoordinate.longitude + degrees.toBigDecimal())
+            val leftLongitude: BigDecimal = (filterDto.curUserCoordinate.longitude - degrees.toBigDecimal())
                 .setScale(6, RoundingMode.UP)
 
             filterDto.leftTopCoordinate = CoordinateDto()
@@ -144,7 +144,7 @@ class ObjectsFilterService(
             val degreePerKm =
                 1 / (111.32 * cos(bottomLatitude.toDouble() * Math.PI / 180)) // коэффициент перевода км в градусы для долготы
             val degrees = OFFSET * degreePerKm // перевод км в градусы для долготы
-            val rightLongitude: BigDecimal = (filterDto.curUserCoordinate.longitude - degrees.toBigDecimal())
+            val rightLongitude: BigDecimal = (filterDto.curUserCoordinate.longitude + degrees.toBigDecimal())
                 .setScale(6, RoundingMode.UP)
 
             filterDto.rightBottomCoordinate = CoordinateDto()
