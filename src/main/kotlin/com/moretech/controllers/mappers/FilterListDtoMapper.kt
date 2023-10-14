@@ -1,9 +1,9 @@
-package com.moretech.controllers.mapper
+package com.moretech.controllers.mappers
 
 import com.model.FilterListDto
 import com.moretech.entities.Service
 
-class FilterListMapper {
+class FilterListDtoMapper {
     companion object {
         fun mapServiceEntityToFilterListDto(services: List<Service>): List<FilterListDto> {
             return services.map {
