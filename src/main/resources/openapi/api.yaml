@@ -102,6 +102,11 @@ components:
         longitude:
           $ref: '#/components/schemas/decimal'
 
+    hourToWorkload:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/int'
+
     dayDto:
       type: string
       enum: [
@@ -145,6 +150,8 @@ components:
           $ref: '#/components/schemas/dayDto'
         openHours:
           $ref: '#/components/schemas/openHoursDto'
+        workload:
+          $ref: '#/components/schemas/hourToWorkload'
 
     openHoursDto:
       type: object
