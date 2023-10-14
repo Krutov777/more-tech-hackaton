@@ -18,11 +18,6 @@
 		<kotlin.version>1.8.22</kotlin.version>
 	</properties>
 
-	<configuration>
-		<compilerPlugins>
-			<plugin>jpa</plugin>
-		</compilerPlugins>
-	</configuration>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
