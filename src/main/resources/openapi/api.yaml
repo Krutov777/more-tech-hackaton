@@ -15,10 +15,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/atmInfoResponse'
-        # '400':
-        #   $ref: '#/components/responses/genericError'
-        # '500':
-        #   $ref: '#/components/responses/genericError'
 
   /api/v1/departments/{departmentId}:
     get:
@@ -30,26 +26,44 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/departmentInfoResponse'
-        # '400':
-        #   $ref: '#/components/responses/genericError'
-        # '500':
-        #   $ref: '#/components/responses/genericError'
 
-  /api/v1/objects:
-    get:
+  /api/v1/list:
+    post:
       tags:
         - Отделения, Банкоматы
       summary: Получение списка отделений и банкоматов
-      parameters:
-        - $ref: '#/components/parameters/leftTopCoordinate'
-        - $ref: '#/components/parameters/rightBottomCoordinate'
+      requestBody:
+        $ref: '#/components/requestBodies/filterRequestBody'
       responses:
         '200':
           $ref: '#/components/responses/objectsInfoResponse'
-          # '400':
-          #   $ref: '#/components/responses/genericError'
-          # '500':
-          #   $ref: '#/components/responses/genericError'
+
+  /api/v1/filter/services:
+    get:
+      tags:
+        - Фильтрация
+      summary: Получение списка сервисов банка ВТБ
+      responses:
+        '200':
+          $ref: '#/components/responses/filterListResponse'
+
+  /api/v1/filter/clients:
+    get:
+      tags:
+        - Фильтрация
+      summary: Получение списка типов клиента банка ВТБ
+      responses:
+        '200':
+          $ref: '#/components/responses/filterListResponse'
+
+  /api/v1/filter/offices:
+    get:
+      tags:
+        - Фильтрация
+      summary: Получение списка типов офисов банка ВТБ
+      responses:
+        '200':
+          $ref: '#/components/responses/filterListResponse'
 
 components:
   parameters:
@@ -68,22 +82,6 @@ components:
       schema:
         $ref: '#/components/schemas/long'
       description: ИД банкомата
-
-    leftTopCoordinate:
-      in: query
-      name: leftTopCoordinate
-      required: true
-      schema:
-        $ref: '#/components/schemas/coordinateDto'
-      description: Левая верхняя координата
-
-    rightBottomCoordinate:
-      in: query
-      name: rightBottomCoordinate
-      required: true
-      schema:
-        $ref: '#/components/schemas/coordinateDto'
-      description: Нижняя правая координата
 
   schemas:
     int:
@@ -117,6 +115,17 @@ components:
       ]
       default: MONDAY
       description: День недели
+
+    clientTypeDto:
+      type: string
+      enum: [
+        VIP,
+        SMALL_BUSINESS,
+        MEDIUM_BUSINESS,
+        REGULAR
+      ]
+      default: REGULAR
+      description: Тип клиента
 
     departmentStatusDto:
       type: string
@@ -152,6 +161,8 @@ components:
       type: object
       description: Информация о сервисе
       properties:
+        id:
+          $ref: '#/components/schemas/long'
         name:
           type: string
         serviceCapability:
@@ -218,6 +229,58 @@ components:
           items:
             $ref: '#/components/schemas/departmentInfoResponseDto'
 
+    filterListDto:
+      type: object
+      description: ИД фильтра и его наименование
+      properties:
+        id:
+          $ref: '#/components/schemas/long'
+        name:
+          type: string
+
+    filterListResponseDto:
+      type: array
+      description: массив ИД услуг и их наименований
+      items:
+        $ref: '#/components/schemas/filterListDto'
+
+    filterDto:
+      description: Фильтр для поиска банкоматов и отделений
+      type: object
+      properties:
+        leftTopCoordinate:
+          $ref: '#/components/schemas/coordinateDto'
+        rightBottomCoordinate:
+          $ref: '#/components/schemas/coordinateDto'
+        curUserCoordinate:
+          $ref: '#/components/schemas/coordinateDto'
+        services:
+          type: array
+          description: массив ИД услуг
+          items:
+            $ref: '#/components/schemas/long'
+        officeTypes:
+          type: array
+          description: массив ИД типов оффисов
+          items:
+            $ref: '#/components/schemas/long'
+        clientTypes:
+          type: array
+          description: массив типов клиентов
+          items:
+            $ref: '#/components/schemas/clientTypeDto'
+        hasPandus:
+          type: boolean
+
+  requestBodies:
+    filterRequestBody:
+      description: Фильтр для поиска банкоматов и отделений
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/filterDto"
+
   responses:
     objectsInfoResponse:
       description: Информация об отделении
@@ -239,4 +302,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/atmInfoResponseDto'
+
+    filterListResponse:
+      description: Список для фильтрации
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/filterListResponseDto'
 
