@@ -4,6 +4,7 @@ import com.model.CoordinateDto
 import com.model.DepartmentInfoResponseDto
 import com.model.DepartmentStatusDto
 import com.moretech.entities.*
+import kotlin.random.Random
 
 class DepartmentInfoDtoMapper {
     companion object {
@@ -24,10 +25,11 @@ class DepartmentInfoDtoMapper {
                 )
                 .metroStation(department.metroStation)
                 .status(mapDepartmentStatusToDepartmentStatusDto(department.status))
-                //.workload(department)
+                .workload(Random(department.id ?: 0L).nextInt(0,101))
                 .individual(
                     openHours
                         .filter { it.id?.typeWork == OpenHoursKey.TypeWork.INDIVIDUAL }
+                        .sortedBy { it.id?.day }
                         .map {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
                         }
@@ -35,6 +37,7 @@ class DepartmentInfoDtoMapper {
                 .legal(
                     openHours
                         .filter { it.id?.typeWork == OpenHoursKey.TypeWork.LEGAL }
+                        .sortedBy { it.id?.day }
                         .map {
                             OperatingDtoMapper.mapOpenHoursToOperatingDto(it)
                         }
